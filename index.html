@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background-color: #131722; color: #d1d4dc; font-family: sans-serif; padding: 15px; margin: 0; }
+        .container { display: flex; flex-direction: column; gap: 10px; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        label { font-size: 13px; color: #848e9c; font-weight: bold; }
+        input { background-color: #1e222d; border: 1px solid #363c4e; color: #00ffcc; padding: 12px; border-radius: 8px; font-size: 16px; outline: none; text-align: left; }
+        input:focus { border-color: #2962ff; }
+        .btn-submit { background-color: #089981; color: white; border: none; padding: 16px; border-radius: 8px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-submit:active { transform: scale(0.98); background-color: #067d69; }
+        h3 { text-align: center; color: white; margin: 0 0 10px 0; font-size: 18px; border-bottom: 1px solid #363c4e; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>إعدادات القنص المتقدمة ⚔️</h3>
+        
+        <div class="input-group">
+            <label>السعر المستهدف (Price):</label>
+            <input type="number" id="price" step="0.00000001" placeholder="0.0000">
+        </div>
+        
+        <div class="input-group">
+            <label>الكمية (Amount):</label>
+            <input type="number" id="amt" placeholder="مثلاً: 4900">
+        </div>
+        
+        <div class="input-group">
+            <label>وقت النبضة (Wait Pulse):</label>
+            <input type="number" id="wait_pulse" value="230">
+        </div>
+
+        <div class="input-group">
+            <label>وقت الإغلاق (Win/Wait Time):</label>
+            <input type="number" id="w_t" step="0.01" value="0.55">
+        </div>
+
+        <div class="input-group">
+            <label>وقت التكرار (Loss/Loop Time):</label>
+            <input type="number" id="l_t" step="0.01" value="1.10">
+        </div>
+        
+        <button class="btn-submit" onclick="sendData()">تفعيل الهجوم 🚀</button>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); 
+
+        function sendData() {
+            let data = {
+                price: document.getElementById('price').value,
+                amt: document.getElementById('amt').value,
+                wait_pulse: document.getElementById('wait_pulse').value,
+                w_t: document.getElementById('w_t').value,
+                l_t: document.getElementById('l_t').value
+            };
+            
+            if(!data.price || !data.amt) {
+                tg.showAlert("يرجى إدخال السعر والكمية أولاً!");
+                return;
+            }
+            
+            tg.sendData(JSON.stringify(data));
+            tg.close();
+        }
+    </script>
+</body>
+</html>
