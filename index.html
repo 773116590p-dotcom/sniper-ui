@@ -7,52 +7,53 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body { font-family: sans-serif; background-color: #1a1a2e; color: #fff; padding: 10px; direction: rtl; }
-        .card { background: #16213e; padding: 15px; border-radius: 12px; border: 1px solid #0f3460; }
-        h3 { text-align: center; color: #4ecca3; margin-bottom: 15px; }
+        .card { background: #16213e; padding: 15px; border-radius: 12px; border: 1px solid #0f3460; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        h3 { text-align: center; color: #4ecca3; margin: 5px 0 15px; }
         label { display: block; margin: 8px 0 3px; font-size: 0.8rem; color: #aaa; }
-        input, select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #1b262c; background: #1a1a2e; color: #fff; box-sizing: border-box; }
-        .row { display: flex; gap: 8px; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #1b262c; background: #1a1a2e; color: #fff; box-sizing: border-box; font-size: 0.9rem; }
+        .row { display: flex; gap: 8px; }
         .row div { flex: 1; }
         .section-title { color: #fca311; font-weight: bold; font-size: 0.85rem; margin-top: 15px; border-bottom: 1px dashed #333; padding-bottom: 3px; }
-        button { width: 100%; padding: 15px; margin-top: 20px; border: none; border-radius: 10px; background: #4ecca3; color: #1a1a2e; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        button { width: 100%; padding: 15px; margin-top: 20px; border: none; border-radius: 10px; background: #4ecca3; color: #1a1a2e; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        button:active { transform: scale(0.98); background: #45b791; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h3>⚔️ إعدادات القنص المتقدمة</h3>
+        <h3>⚔️ لوحة تحكم القنص</h3>
         
         <label>نوع الهجوم الأساسي:</label>
         <select id="side">
-            <option value="buy">شراء (BUY 🟢) -> الطعم سيكون بيع</option>
-            <option value="sell">بيع (SELL 🔴) -> الطعم سيكون شراء</option>
+            <option value="buy">شراء (BUY 🟢) -> الطعم بيع</option>
+            <option value="sell">بيع (SELL 🔴) -> الطعم شراء</option>
         </select>
 
-        <div class="section-title">🎯 الهجوم الكبير</div>
+        <div class="section-title">🎯 الهجوم الكبير (الهدف)</div>
         <div class="row">
-            <div><label>السعر الحقيقي:</label><input type="number" id="p_real" step="0.0001"></div>
-            <div><label>الكمية:</label><input type="number" id="amt"></div>
+            <div><label>سعر الدخول:</label><input type="number" id="p_real" step="0.0001" placeholder="1.7550"></div>
+            <div><label>الكمية:</label><input type="number" id="amt" placeholder="4900"></div>
         </div>
 
         <div class="section-title">🎣 الطعم المعاكس (Bait)</div>
         <div class="row">
-            <div><label>سعر الطعم:</label><input type="number" id="p_bait" step="0.0001"></div>
-            <div><label>كمية الطعم:</label><input type="number" id="amt_bait"></div>
+            <div><label>سعر الطعم:</label><input type="number" id="p_bait" step="0.0001" placeholder="1.7600"></div>
+            <div><label>كمية الطعم:</label><input type="number" id="amt_bait" placeholder="100"></div>
         </div>
         <div class="row">
-            <div><label>بدء الطعم (قبل الهجوم بـ):</label><input type="number" id="t_bait_start" value="10"></div>
-            <div><label>وقت إغلاق الطعم:</label><input type="number" id="t_bait_close" step="0.01"></div>
+            <div><label>الطعم قبل الهجوم بـ (ث):</label><input type="number" id="t_bait_start" value="10"></div>
+            <div><label>مدة بقاء الطعم:</label><input type="number" id="t_bait_close" step="0.01" value="0.50"></div>
         </div>
 
-        <div class="section-title">⏱️ توقيت النبضة والهجوم</div>
-        <label>وقت النبضة (Wait Pulse):</label>
-        <input type="number" id="wait_pulse">
+        <div class="section-title">⏱️ توقيت النبضة</div>
+        <label>وقت الانتظار (Wait Pulse):</label>
+        <input type="number" id="wait_pulse" placeholder="231">
         
         <div class="row">
-            <div><label>وقت الإغلاق:</label><input type="number" id="w_t" step="0.01"></div>
-            <div><label>وقت التكرار:</label><input type="number" id="l_t" step="0.01"></div>
+            <div><label>وقت الإغلاق (Win):</label><input type="number" id="w_t" step="0.01" value="0.40"></div>
+            <div><label>وقت التكرار (Loss):</label><input type="number" id="l_t" step="0.01" value="1.00"></div>
         </div>
 
-        <button onclick="save()">🚀 تفعيل (الهجوم + الطعم المعاكس)</button>
+        <button onclick="save()">🚀 تفعيل النظام المتكامل</button>
     </div>
 
     <script>
