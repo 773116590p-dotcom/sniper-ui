@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sniper Elite Pro</title>
+    <title>Sniper Pro Control</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body { font-family: sans-serif; background-color: #1a1a2e; color: #fff; padding: 15px; direction: rtl; }
-        .card { background: #16213e; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        h2 { text-align: center; color: #4ecca3; font-size: 1.2rem; }
-        label { display: block; margin: 10px 0 5px; font-size: 0.9rem; color: #999; }
+        .card { background: #16213e; padding: 20px; border-radius: 12px; }
+        label { display: block; margin: 10px 0 5px; font-size: 0.9rem; color: #aaa; }
         input, select { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #0f3460; background: #1a1a2e; color: #fff; box-sizing: border-box; }
         .row { display: flex; gap: 10px; }
         .row div { flex: 1; }
@@ -18,31 +17,26 @@
 </head>
 <body>
     <div class="card">
-        <h2>⚔️ إعدادات القنص المتقدمة</h2>
-        
+        <h2 style="text-align:center; color:#4ecca3;">⚙️ إعدادات القنص</h2>
         <label>نوع العملية:</label>
         <select id="side">
             <option value="buy">شراء (BUY 🟢)</option>
             <option value="sell">بيع (SELL 🔴)</option>
         </select>
-
         <div class="row">
             <div>
                 <label>أقل سعر (Min):</label>
-                <input type="number" id="p_min" step="0.0001" placeholder="مثلاً: 1.7010">
+                <input type="number" id="p_min" step="0.0001" value="1.7010">
             </div>
             <div>
                 <label>أعلى سعر (Max):</label>
-                <input type="number" id="p_max" step="0.0001" placeholder="مثلاً: 1.7060">
+                <input type="number" id="p_max" step="0.0001" value="1.7060">
             </div>
         </div>
-
         <label>الكمية (Amount):</label>
-        <input type="number" id="amt" placeholder="مثلاً: 5000">
-
+        <input type="number" id="amt" value="4900">
         <label>وقت النبضة (Wait Pulse):</label>
         <input type="number" id="wait_pulse" value="230">
-
         <div class="row">
             <div>
                 <label>وقت الإغلاق:</label>
@@ -53,13 +47,10 @@
                 <input type="number" id="l_t" step="0.01" value="1.1">
             </div>
         </div>
-
-        <button onclick="save()">🚀 تفعيل الهجوم</button>
+        <button onclick="save()">🚀 تفعيل وتحديث الإعدادات</button>
     </div>
-
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
         function save() {
             const data = {
                 side: document.getElementById('side').value,
