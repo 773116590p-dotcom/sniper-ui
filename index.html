@@ -3,96 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إعدادات القنص المتقدمة</title>
+    <title>Sniper Control Panel</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; background-color: #1a1e2e; color: white; padding: 20px; }
-        .card { background: #24293e; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        h3 { text-align: center; border-bottom: 1px solid #3e445e; padding-bottom: 10px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-size: 0.9em; color: #a0a8c0; }
-        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #3e445e; background: #1a1e2e; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #00a884; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn:active { transform: scale(0.98); }
-        .side-group { display: flex; gap: 10px; margin-bottom: 15px; }
-        .side-btn { flex: 1; padding: 10px; border: 2px solid #3e445e; border-radius: 8px; text-align: center; cursor: pointer; background: #1a1e2e; }
-        .side-btn.active-buy { border-color: #00a884; background: rgba(0, 168, 132, 0.2); }
-        .side-btn.active-sell { border-color: #f44336; background: rgba(244, 67, 54, 0.2); }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h2 {
+            text-align: center;
+            color: #00e676;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #252525;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00e676;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        .row .input-group {
+            flex: 1;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #00e676;
+            color: #000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #00c853;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h3>⚔️ إعدادات القنص المتقدمة</h3>
-        
-        <label>نوع العملية:</label>
-        <div class="side-group">
-            <div id="buy-btn" class="side-btn active-buy" onclick="setSide('buy')">شراء (BUY)</div>
-            <div id="sell-btn" class="side-btn" onclick="setSide('sell')">بيع (SELL)</div>
-        </div>
 
+<div class="container">
+    <h2>⚙️ لوحة تحكم القناص</h2>
+
+    <div class="input-group">
+        <label>نوع العملية:</label>
+        <select id="side">
+            <option value="buy">شراء (BUY 🟢)</option>
+            <option value="sell">بيع (SELL 🔴)</option>
+        </select>
+    </div>
+
+    <div class="row">
         <div class="input-group">
-            <label>السعر المستهدف (Price):</label>
-            <input type="number" id="price" step="0.0001" placeholder="مثلاً: 1.8101">
+            <label>أقل سعر (Min):</label>
+            <input type="number" id="p_min" step="0.0001" value="1.7010">
         </div>
         <div class="input-group">
-            <label>الكمية (Amount):</label>
-            <input type="number" id="amt" placeholder="مثلاً: 5000">
+            <label>أعلى سعر (Max):</label>
+            <input type="number" id="p_max" step="0.0001" value="1.7060">
         </div>
+    </div>
+
+    <div class="input-group">
+        <label>الكمية (Amount):</label>
+        <input type="number" id="amt" value="4900">
+    </div>
+
+    <div class="input-group">
+        <label>وقت النبضة (Wait Pulse):</label>
+        <input type="number" id="wait_pulse" value="230">
+    </div>
+
+    <div class="row">
         <div class="input-group">
-            <label>وقت النبضة (Wait Pulse):</label>
-            <input type="number" id="wait_pulse" value="230">
-        </div>
-        <div class="input-group">
-            <label>وقت الإغلاق (Win/Wait Time):</label>
+            <label>وقت الإغلاق (Win):</label>
             <input type="number" id="w_t" step="0.01" value="0.55">
         </div>
         <div class="input-group">
-            <label>وقت التكرار (Loss/Loop Time):</label>
-            <input type="number" id="l_t" step="0.1" value="1.1">
+            <label>وقت التكرار (Loss):</label>
+            <input type="number" id="l_t" step="0.01" value="1.1">
         </div>
-
-        <button class="btn" onclick="sendData()">🚀 تفعيل الهجوم</button>
     </div>
 
-    <script>
-        let tg = window.Telegram.WebApp;
-        let currentSide = 'buy';
-        tg.expand();
+    <button onclick="sendData()">🚀 تفعيل الهجوم العشوائي</button>
+    <div class="footer">سيتم إرسال الإعدادات فوراً إلى البوت</div>
+</div>
 
-        // تحميل الإعدادات المحفوظة عند فتح الصفحة
-        window.onload = function() {
-            const saved = JSON.parse(localStorage.getItem('sniper_settings') || '{}');
-            if (saved.price) document.getElementById('price').value = saved.price;
-            if (saved.amt) document.getElementById('amt').value = saved.amt;
-            if (saved.wait_pulse) document.getElementById('wait_pulse').value = saved.wait_pulse;
-            if (saved.w_t) document.getElementById('w_t').value = saved.w_t;
-            if (saved.l_t) document.getElementById('l_t').value = saved.l_t;
-            if (saved.side) setSide(saved.side);
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // تمديد الواجهة لتملأ الشاشة
+
+    function sendData() {
+        const data = {
+            side: document.getElementById('side').value,
+            p_min: document.getElementById('p_min').value,
+            p_max: document.getElementById('p_max').value,
+            amt: document.getElementById('amt').value,
+            wait_pulse: document.getElementById('wait_pulse').value,
+            w_t: document.getElementById('w_t').value,
+            l_t: document.getElementById('l_t').value
         };
 
-        function setSide(side) {
-            currentSide = side;
-            document.getElementById('buy-btn').className = 'side-btn' + (side === 'buy' ? ' active-buy' : '');
-            document.getElementById('sell-btn').className = 'side-btn' + (side === 'sell' ? ' active-sell' : '');
-        }
+        // إرسال البيانات إلى البوت وإغلاق الواجهة
+        tg.sendData(JSON.stringify(data));
+        tg.close();
+    }
+</script>
 
-        function sendData() {
-            const data = {
-                side: currentSide,
-                price: document.getElementById('price').value,
-                amt: document.getElementById('amt').value,
-                wait_pulse: document.getElementById('wait_pulse').value,
-                w_t: document.getElementById('w_t').value,
-                l_t: document.getElementById('l_t').value
-            };
-
-            // حفظ الإعدادات في ذاكرة المتصفح
-            localStorage.setItem('sniper_settings', JSON.stringify(data));
-            
-            // إرسال البيانات للبوت
-            tg.sendData(JSON.stringify(data));
-            tg.close();
-        }
-    </script>
 </body>
 </html>
