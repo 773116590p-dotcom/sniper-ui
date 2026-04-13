@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sniper Elite - Pro Millisecond</title>
+    <title>Sniper Elite - Final Layout</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body { font-family: sans-serif; background-color: #1a1a2e; color: #fff; padding: 10px; direction: rtl; }
@@ -30,27 +30,29 @@
 
         <div class="section-title">🎯 الهجوم الكبير (الهدف)</div>
         <div class="row">
-            <div><label>سعر الدخول:</label><input type="number" id="p_real" step="0.00000001" placeholder="0.000000044"></div>
+            <div><label>سعر الدخول:</label><input type="number" id="p_real" step="0.00000001" placeholder="2.118"></div>
             <div><label>الكمية:</label><input type="number" id="amt" placeholder="4900"></div>
         </div>
 
-        <div class="section-title">🎣 إعدادات التوقيت المتقدمة</div>
+        <div class="section-title">🎣 الطعم المعاكس (Bait)</div>
         <div class="row">
             <div><label>سعر الطعم:</label><input type="number" id="p_bait" step="0.00000001" placeholder="2.1175"></div>
             <div><label>كمية الطعم:</label><input type="number" id="amt_bait" placeholder="1"></div>
         </div>
         <div class="row">
-            <div><label>خصم الملي ثانية:</label><input type="number" id="offset_ms" value="100"></div>
-            <div><label>مدة الهجوم (ث):</label><input type="number" id="cycle_duration" value="50"></div>
+            <div><label>الطعم قبل الهجوم بـ (ث):</label><input type="number" id="t_bait_start" value="3"></div>
+            <div><label>مدة الهجوم (ث):</label><input type="number" id="cycle_duration" value="55"></div>
         </div>
 
-        <div class="section-title">⏱️ توقيت النبضة والراحة</div>
-        <label>وقت الانتظار (Wait Pulse):</label>
-        <input type="number" id="wait_pulse" placeholder="240">
+        <div class="section-title">⏱️ توقيت النبضة</div>
+        <div class="row">
+            <div><label>وقت الانتظار (Wait Pulse):</label><input type="number" id="wait_pulse" placeholder="240"></div>
+            <div><label>خصم الملي ثانية:</label><input type="number" id="offset_ms" value="100"></div>
+        </div>
         
         <div class="row">
-            <div><label>وقت الإغلاق (إلغاء):</label><input type="number" id="w_t" step="0.01" value="0.20"></div>
-            <div><label>وقت التكرار (الراحة):</label><input type="number" id="l_t" step="1" value="2"></div>
+            <div><label>وقت الإغلاق (إلغاء):</label><input type="number" id="w_t" step="0.01" value="0.2"></div>
+            <div><label>وقت التكرار (الراحة):</label><input type="number" id="l_t" step="1" value="1.05"></div>
         </div>
 
         <button onclick="save()">🚀 تفعيل النظام المتكامل</button>
@@ -60,8 +62,8 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // تحديث أسماء الحقول لترسل البيانات الجديدة للبوت
-        const fields = ['side', 'p_real', 'amt', 'p_bait', 'amt_bait', 'offset_ms', 'cycle_duration', 'wait_pulse', 'w_t', 'l_t'];
+        // جميع الحقول المطلوبة للمزامنة مع البوت
+        const fields = ['side', 'p_real', 'amt', 'p_bait', 'amt_bait', 't_bait_start', 'cycle_duration', 'wait_pulse', 'offset_ms', 'w_t', 'l_t'];
 
         window.onload = function() {
             fields.forEach(f => {
@@ -82,8 +84,6 @@
                     localStorage.setItem(f, data[f]);
                 }
             });
-            
-            // إرسال البيانات كـ JSON للبوت
             tg.sendData(JSON.stringify(data));
             tg.close();
         }
