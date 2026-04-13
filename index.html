@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sniper Elite - Bait System</title>
+    <title>Sniper Elite - Pro Millisecond</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body { font-family: sans-serif; background-color: #1a1a2e; color: #fff; padding: 10px; direction: rtl; }
@@ -30,27 +30,27 @@
 
         <div class="section-title">🎯 الهجوم الكبير (الهدف)</div>
         <div class="row">
-            <div><label>سعر الدخول:</label><input type="number" id="p_real" step="0.0001" placeholder="1.7550"></div>
+            <div><label>سعر الدخول:</label><input type="number" id="p_real" step="0.00000001" placeholder="0.000000044"></div>
             <div><label>الكمية:</label><input type="number" id="amt" placeholder="4900"></div>
         </div>
 
-        <div class="section-title">🎣 الطعم المعاكس (Bait)</div>
+        <div class="section-title">🎣 إعدادات التوقيت المتقدمة</div>
         <div class="row">
-            <div><label>سعر الطعم:</label><input type="number" id="p_bait" step="0.0001" placeholder="1.7600"></div>
-            <div><label>كمية الطعم:</label><input type="number" id="amt_bait" placeholder="100"></div>
+            <div><label>سعر الطعم:</label><input type="number" id="p_bait" step="0.00000001" placeholder="2.1175"></div>
+            <div><label>كمية الطعم:</label><input type="number" id="amt_bait" placeholder="1"></div>
         </div>
         <div class="row">
-            <div><label>الطعم قبل الهجوم بـ (ث):</label><input type="number" id="t_bait_start" value="10"></div>
-            <div><label>مدة بقاء الطعم:</label><input type="number" id="t_bait_close" step="0.01" value="0.50"></div>
+            <div><label>خصم الملي ثانية:</label><input type="number" id="offset_ms" value="100"></div>
+            <div><label>مدة الهجوم (ث):</label><input type="number" id="cycle_duration" value="50"></div>
         </div>
 
-        <div class="section-title">⏱️ توقيت النبضة</div>
+        <div class="section-title">⏱️ توقيت النبضة والراحة</div>
         <label>وقت الانتظار (Wait Pulse):</label>
-        <input type="number" id="wait_pulse" placeholder="231">
+        <input type="number" id="wait_pulse" placeholder="240">
         
         <div class="row">
-            <div><label>وقت الإغلاق (Win):</label><input type="number" id="w_t" step="0.01" value="0.40"></div>
-            <div><label>وقت التكرار (Loss):</label><input type="number" id="l_t" step="0.01" value="1.00"></div>
+            <div><label>وقت الإغلاق (إلغاء):</label><input type="number" id="w_t" step="0.01" value="0.20"></div>
+            <div><label>وقت التكرار (الراحة):</label><input type="number" id="l_t" step="1" value="2"></div>
         </div>
 
         <button onclick="save()">🚀 تفعيل النظام المتكامل</button>
@@ -59,21 +59,31 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        const fields = ['side', 'p_real', 'amt', 'p_bait', 'amt_bait', 't_bait_start', 't_bait_close', 'wait_pulse', 'w_t', 'l_t'];
+        
+        // تحديث أسماء الحقول لترسل البيانات الجديدة للبوت
+        const fields = ['side', 'p_real', 'amt', 'p_bait', 'amt_bait', 'offset_ms', 'cycle_duration', 'wait_pulse', 'w_t', 'l_t'];
 
         window.onload = function() {
             fields.forEach(f => {
                 const val = localStorage.getItem(f);
-                if (val) document.getElementById(f).value = val;
+                if (val) {
+                    const el = document.getElementById(f);
+                    if(el) el.value = val;
+                }
             });
         };
 
         function save() {
             const data = {};
             fields.forEach(f => {
-                data[f] = document.getElementById(f).value;
-                localStorage.setItem(f, data[f]);
+                const el = document.getElementById(f);
+                if(el) {
+                    data[f] = el.value;
+                    localStorage.setItem(f, data[f]);
+                }
             });
+            
+            // إرسال البيانات كـ JSON للبوت
             tg.sendData(JSON.stringify(data));
             tg.close();
         }
