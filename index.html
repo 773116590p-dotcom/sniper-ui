@@ -94,7 +94,6 @@
             document.getElementById('main-content').style.display = 'block';
             document.getElementById('profile-title').innerText = `⚔️ لوحة التحكم (${num})`;
             
-            // تحميل البيانات الخاصة بالرقم المختار فقط
             fields.forEach(f => {
                 const val = localStorage.getItem(currentProfile + '_' + f);
                 const el = document.getElementById(f);
